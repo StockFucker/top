@@ -79,8 +79,8 @@ for i in range(2,len(all_filter)):
         valid_data_df = data_df[combine_filter]
         if len(valid_data_df) < 30:
             continue
-        for i in range(1,8):
-            valid2_data_df = recent(i,valid_data_df)
+        for j in range(1,8):
+            valid2_data_df = recent(j,valid_data_df)
             valid2_data_df = valid2_data_df.sort_values("minute")
             valid2_data_df = valid2_data_df.groupby("date").first()
             count = len(valid2_data_df)
@@ -91,7 +91,7 @@ for i in range(2,len(all_filter)):
                 win_df = valid2_data_df[valid2_data_df["change"] > 1.0]
                 win_ratio = float(len(win_df))/len(valid2_data_df)
                 if win_ratio > 0.6:
-                    name = "-".join(combine)
+                    name = "-".join(combine) + "-" + str(j)
                     win_ratio_se[name] = win_ratio
                     mean_se[name] = mean
                     count_se[name] = count
