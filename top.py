@@ -11,6 +11,7 @@ from scipy.stats import zscore
 from itertools import combinations
 
 data_df = pd.read_csv("top.csv",index_col=0, parse_dates=True)
+data_df = data_df[data_df["change"] < 1.22]
 
 def low(day):
     return "minute_low" if day == 2 else "low" + str(day)
