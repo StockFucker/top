@@ -72,11 +72,11 @@ speedup2 = speedup(2)
 
 filterTss = [["yz"],["~top"],["~yz","top","opentop"],["~opentop","top"]]
 
-#filterOs = ["opentop2","speedup1","jump1","speedup2","jump2","foot0","foot1","foot2","is_new","small_capq","small_cap","minute","small_volume"]
+filterOs = ["opentop2","speedup1","jump1","speedup2","jump2","foot0","foot1","foot2","is_new","small_capq","small_cap","minute","small_volume"]
 
 
 # filterTss = [["yz"],["~top"]]
-filterOs = ["speedup1","jump1","opentop2"]
+# filterOs = ["speedup1","jump1","opentop2"]
 
 all_filter_types = ["0","1"] + filterOs
 
@@ -120,7 +120,6 @@ for i in range(3,len(all_filter_types)):
     filter_typess = list(combinations(all_filter_types, i))
     for filter_types in filter_typess:
         filterss = extractFilters(list(filter_types))
-        print len(filterss)
         for each_filters in filterss:
             combined_filter = combineFilters(each_filters)
             valid_data_df = data_df[combined_filter]
