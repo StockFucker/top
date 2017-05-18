@@ -25,58 +25,74 @@ def nottop(day):
     return (data_df["close" + str(day)] < data_df["high_limit" + str(day)])
 def opentop(day):
     return (data_df["open" + str(day)] == data_df["high_limit" + str(day)])
-#前天/昨天/今天开盘涨停
-opentop0 = opentop(0)
-opentop1 = opentop(1)
-opentop2 = opentop(2)
-# 前天/昨天/今天是/不是一字板
-yz0 = yz(0)
-yz1 = yz(1)
-notyz0 = notyz(0)
-notyz1 = notyz(1)
-notyz2 = notyz(2)
-# 前天/昨天是/否涨停
-top0 = top(0)
-top1 = top(1)
-nottop0 = nottop(0)
-nottop1 = nottop(1)
 def jump(day):
     return (data_df[low(day)] > data_df["high" + str(day - 1)]) 
 def foot(day,degree = 1.0):
     return (data_df[low(day)] >= data_df["open" + str(day)] * degree)
-# 昨天/今天 跳高
-jump1 = jump(1)
-jump2 = jump(2)
+def speedup(day):
+    return (data_df["high" + str(day)] - data_df[low(day)] < data_df["high" + str(day - 1)] - data_df[low(day - 1)])
+def recent(day,valid_data_df):
+    return valid_data_df[valid_data_df["recent"] == day]
+
+
+is_new = data_df["isnew"] == 1
+small_capq = data_df["capq"] < 0.5
+small_cap = data_df["circap"] < 200
+minute = (data_df["minute"] < "11:00:00")
+small_volume = (data_df["minute_volume"] < data_df["volume1"] * 0.5)
+
+#前天/昨天/今天开盘涨停
+opentop0 = opentop(0)
+opentop1 = opentop(1)
+opentop2 = opentop(2)
+
+# 前天/昨天/今天是/不是一字板
+yz0 = yz(0)
+yz1 = yz(1)
+yz2 = yz(2)
+
+# 前天/昨天是/否涨停
+top0 = top(0)
+top1 = top(1)
+
 # 前天/昨天/今天 光脚
 foot0 = foot(0,0.995)
 foot1 = foot(1,0.995)
 foot2 = foot(2,0.995)
-def speedup(day):
-    return (data_df["high" + str(day)] - data_df[low(day)] < data_df["high" + str(day - 1)] - data_df[low(day - 1)])
+
+# 昨天/今天 跳高
+jump1 = jump(1)
+jump2 = jump(2)
 
 #昨天/今天 加速
 speedup1 = speedup(1)
 speedup2 = speedup(2)
 
-minute = (data_df["minute"] < "11:00:00")
-volume = (data_df["minute_volume"] < data_df["volume1"] * 0.5)
 
-def recent(day,valid_data_df):
-    return valid_data_df[valid_data_df["recent"] == day]
+filtersT = [["yz"],["~top"],["~yz","top","opentop"],["~opentop","top"]]
+filtersO = ["speedup1","jump1","speedup2","jump2","foot0","foot1","foot2","is_new","small_capq","small_cap","minute","small_volume"]
 
-all_filter = ["opentop0","opentop1","opentop2","notyz0","notyz1","yz0","yz1","top0","top1","nottop0","nottop1",\
-            "jump1","jump2","foot0","foot1","foot2","speedup1","speedup2","minute","volume"]
-# all_filter = ["yz0" , "top1" , "opentop1", "notyz1","jump1" ,"minute","volume"]
+all_filter = ["A","B","C"] + filtersO
+
+def combineFilters(filters):
+    return reduce(lambda x, y: x & y, [eval(filter_name) for filter_name in filters] + [~yz2])
+
+def extractFilters(combine):
+    for single_filter in filters:
+        filters = filters + []
+
+
 
 win_ratio_se = pd.Series()
 mean_se = pd.Series()
 count_se = pd.Series()
 
-for i in range(2,len(all_filter)):
+for i in range(3,len(all_filter)):
     print i
     combines = list(combinations(all_filter, i))
     for combine in combines:
-        combine_filter = reduce(lambda x, y: x & y, [eval(filter_name) for filter_name in combine] + [notyz2])
+        filters = extractFilters(combine)
+        combine_filter = combineFilters(filters)
         valid_data_df = data_df[combine_filter]
         if len(valid_data_df) < 30:
             continue
