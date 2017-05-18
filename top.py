@@ -72,7 +72,7 @@ speedup2 = speedup(2)
 
 filterTss = [["yz"],["~top"],["~yz","top","opentop"],["~opentop","top"]]
 
-filterOs = ["opentop2","speedup1","jump1","speedup2","jump2","foot0","foot1","foot2","is_new","small_capq","small_cap","minute","small_volume"]
+filterOs = ["opentop2","speedup1","jump1","speedup2","jump2","foot0","foot1","foot2","isnew","small_capq","small_cap","minute","small_volume"]
 
 
 # filterTss = [["yz"],["~top"]]
