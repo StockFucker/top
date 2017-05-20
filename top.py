@@ -72,7 +72,7 @@ speedup2 = speedup(2)
 
 filterTss = [["yz"],["~top"],["~yz","top","opentop"],["~opentop","top"]]
 
-filterOs = ["opentop2","speedup1","jump1","speedup2","jump2","foot0","foot1","foot2","isnew","small_capq","small_cap","minute","small_volume"]
+filterOs = ["opentop2","speedup1","jump1","speedup2","jump2","foot0","foot1","foot2","isnew","small_capq","minute","small_volume"]
 
 
 # filterTss = [["yz"],["~top"]]
@@ -117,6 +117,7 @@ mean_se = pd.Series()
 count_se = pd.Series()
 
 for i in range(3,len(all_filter_types)):
+    print i
     filter_typess = list(combinations(all_filter_types, i))
     for filter_types in filter_typess:
         filterss = extractFilters(list(filter_types))
