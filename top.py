@@ -9,66 +9,7 @@ import multiprocessing
 import warnings
 from scipy.stats import zscore
 from itertools import combinations
-
-data_df = pd.read_csv("top2.csv",index_col=0, parse_dates=True)
-data_df = data_df[data_df["change"] < 1.22]
-data_df = data_df[~data_df["minute_low"].isnull()]
-
-def low(day):
-    return "minute_low" if day == 2 else "low" + str(day)
-def yz(day):
-    return (data_df[low(day)] == data_df["high_limit" + str(day)])
-def notyz(day):
-    return (data_df[low(day)] < data_df["high_limit" + str(day)])
-def top(day):
-    return (data_df["close" + str(day)] == data_df["high_limit" + str(day)])
-def nottop(day):
-    return (data_df["close" + str(day)] < data_df["high_limit" + str(day)])
-def opentop(day):
-    return (data_df["open" + str(day)] == data_df["high_limit" + str(day)])
-def jump(day):
-    return (data_df[low(day)] > data_df["high" + str(day - 1)]) 
-def foot(day,degree = 1.0):
-    return (data_df[low(day)] >= data_df["open" + str(day)] * degree)
-def speedup(day):
-    return (data_df["high" + str(day)] - data_df[low(day)] < data_df["high" + str(day - 1)] - data_df[low(day - 1)])
-def recent(day,valid_data_df):
-    return valid_data_df[valid_data_df["recent"] == day]
-
-
-isnew = data_df["isnew"] == 1
-small_capq = data_df["capq"] < 0.5
-small_cap = data_df["circap"] < 200
-minute = (data_df["minute"] < "11:00:00")
-small_volume = (data_df["minute_volume"] < data_df["volume1"] * 0.5)
-
-#前天/昨天/今天开盘涨停
-opentop0 = opentop(0)
-opentop1 = opentop(1)
-opentop2 = opentop(2)
-
-# 前天/昨天/今天是/不是一字板
-yz0 = yz(0)
-yz1 = yz(1)
-yz2 = yz(2)
-
-# 前天/昨天是/否涨停
-top0 = top(0)
-top1 = top(1)
-
-# 前天/昨天/今天 光脚
-foot0 = foot(0,0.995)
-foot1 = foot(1,0.995)
-foot2 = foot(2,0.995)
-
-# 昨天/今天 跳高
-jump1 = jump(1)
-jump2 = jump(2)
-
-#昨天/今天 加速
-speedup1 = speedup(1)
-speedup2 = speedup(2)
-
+from utils import *
 
 filterTss = [["yz"],["~top"],["~yz","top","opentop"],["~opentop","top"]]
 
@@ -127,7 +68,7 @@ for i in range(3,len(all_filter_types)):
             if len(valid_data_df) < 30:
                 continue
             for j in range(1,8):
-                valid2_data_df = recent(j,valid_data_df)
+                valid2_data_df = valid2_data_df[recent(j,valid_data_df)]
                 valid2_data_df = valid2_data_df.sort_values("minute")
                 valid2_data_df = valid2_data_df.groupby("date").first()
                 count = len(valid2_data_df)
