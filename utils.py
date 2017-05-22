@@ -73,7 +73,9 @@ def getFilter(filter_key,with_recent = False):
     the_filter = combineFilters(filter_names)
     if with_recent:
         recent_filter = recent(int(filter_key[-1]),data_df)
-    return the_filter & recent_filter
+        return the_filter & recent_filter
+    else:
+        return the_filter
 
 def result(valid_data_df):
     result_df = pd.DataFrame()
