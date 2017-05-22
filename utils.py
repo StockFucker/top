@@ -1,7 +1,7 @@
 #  -*- coding: utf-8 -*-
 import pandas as pd
 
-data_df = pd.read_csv("top2.csv",index_col=0, parse_dates=True)
+data_df = pd.read_csv("top3.csv",index_col=0, parse_dates=True)
 data_df = data_df[data_df["change"] < 1.22]
 data_df = data_df[~data_df["minute_low"].isnull()]
 
@@ -58,6 +58,8 @@ jump2 = jump(2)
 #昨天/今天 加速
 speedup1 = speedup(1)
 speedup2 = speedup(2)
+
+data_df = data_df[~yz2]
 
 def __eval(filter_name):
     if filter_name[0] == "~":
