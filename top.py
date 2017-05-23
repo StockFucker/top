@@ -21,15 +21,6 @@ filterOs = ["opentop2","speedup1","jump1","speedup2","jump2","foot0","foot1","fo
 
 all_filter_types = ["0","1"] + filterOs
 
-def __eval(filter_name):
-    if filter_name[0] == "~":
-        return ~eval(filter_name[1:])
-    else:
-        return eval(filter_name)
-
-def combineFilters(filters):
-    return reduce(lambda x, y: x & y, [__eval(filter_name) for filter_name in filters] + [~yz2])
-
 def reverseType(filter_type,filters):
     return [single_filter.replace(filter_type,"~"+filter_type) for single_filter in filters]
 
@@ -68,16 +59,16 @@ for i in range(3,len(all_filter_types)):
             if len(valid_data_df) < 30:
                 continue
             for j in range(1,8):
-                valid2_data_df = valid2_data_df[recent(j,valid_data_df)]
-                valid2_data_df = valid2_data_df.sort_values("minute")
-                valid2_data_df = valid2_data_df.groupby("date").first()
-                count = len(valid2_data_df)
+                sub_valid_data_df = valid_data_df[recent(j,valid_data_df)]
+                sub_valid_data_df = sub_valid_data_df.sort_values("minute")
+                sub_valid_data_df = sub_valid_data_df.groupby("date").first()
+                count = len(sub_valid_data_df)
                 if count < 10:
                     continue
-                mean = valid2_data_df.change.mean()
+                mean = sub_valid_data_df.change.mean()
                 if mean > 1.02:
-                    win_df = valid2_data_df[valid2_data_df["change"] > 1.0]
-                    win_ratio = float(len(win_df))/len(valid2_data_df)
+                    win_df = sub_valid_data_df[sub_valid_data_df["change"] > 1.0]
+                    win_ratio = float(len(win_df))/len(sub_valid_data_df)
                     if win_ratio > 0.6:
                         name = "-".join(each_filters) + "-" + str(j)
                         win_ratio_se[name] = win_ratio
