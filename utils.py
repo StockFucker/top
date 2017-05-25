@@ -4,7 +4,7 @@ import pandas as pd
 data_df = pd.read_csv("top2.csv",index_col=0, parse_dates=True)
 data_df = data_df[data_df["change"] < 1.22]
 data_df = data_df[~data_df["minute_low"].isnull()]
-data_df = data_df[data_df["st"] == True]
+data_df = data_df[data_df["st"] == False]
 
 def low(day):
     return "minute_low" if day == 2 else "low" + str(day)
