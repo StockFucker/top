@@ -8,6 +8,7 @@ import os
 import multiprocessing
 import warnings
 from scipy.stats import zscore
+from scipy.stats import mstats
 from itertools import combinations
 from utils import *
 
@@ -65,7 +66,8 @@ for i in range(3,len(all_filter_types)):
                 count = len(sub_valid_data_df)
                 if count < 10:
                     continue
-                mean = sub_valid_data_df.change.mean()
+                change_se = mstats.winsorize(sub_valid_data_df.change,limits=[0.05, 0.05])
+                mean = change_se.mean()
                 if mean > 1.02:
                     win_df = sub_valid_data_df[sub_valid_data_df["change"] > 1.0]
                     win_ratio = float(len(win_df))/len(sub_valid_data_df)

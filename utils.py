@@ -4,6 +4,7 @@ import pandas as pd
 data_df = pd.read_csv("top2.csv",index_col=0, parse_dates=True)
 data_df = data_df[data_df["change"] < 1.22]
 data_df = data_df[~data_df["minute_low"].isnull()]
+data_df = data_df[~data_df.index.duplicated()] 
 data_df = data_df[data_df["st"] == False]
 
 def low(day):
