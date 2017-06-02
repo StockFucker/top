@@ -14,7 +14,7 @@ from utils import *
 
 filterTss = [["yz"],["~top"],["~yz","top","opentop"],["~opentop","top"]]
 
-filterOs = ["opentop2","speedup1","jump1","speedup2","jump2","foot0","foot1","foot2","isnew","small_capq","minute","small_volume"]
+filterOs = ["opentop2","speedup1","jump1","speedup2","jump2","foot0","foot1","foot2","more_wave","more_nearby","small_volume"]
 
 
 # filterTss = [["yz"],["~top"]]
@@ -81,4 +81,4 @@ df = pd.DataFrame()
 df["win_ratio"] = win_ratio_se
 df["mean"] = mean_se
 df["count"] = count_se
-df.to_csv("output3.csv")
+df.to_csv("output5.csv")

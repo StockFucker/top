@@ -1,7 +1,7 @@
 #  -*- coding: utf-8 -*-
 import pandas as pd
 
-data_df = pd.read_csv("top2.csv",index_col=0, parse_dates=True)
+data_df = pd.read_csv("top.csv",index_col=0, parse_dates=True)
 data_df = data_df[data_df["change"] < 1.22]
 data_df = data_df[~data_df["minute_low"].isnull()]
 data_df = data_df[~data_df.index.duplicated()] 
@@ -29,10 +29,13 @@ def recent(day,valid_data_df):
     return valid_data_df["recent"] == day
 
 isnew = data_df["isnew"] == 1
-small_capq = data_df["capq"] < 0.5
-small_cap = data_df["circap"] < 200
+# small_capq = data_df["capq"] < 0.5
+# small_cap = data_df["circap"] < 200
 minute = (data_df["minute"] < "11:00:00")
 small_volume = (data_df["minute_volume"] < data_df["volume1"] * 0.5)
+
+more_wave = data_df["wave"] > 0
+more_nearby = data_df["nearby"] > 2
 
 #前天/昨天/今天开盘涨停
 opentop0 = opentop(0)
@@ -62,6 +65,7 @@ speedup1 = speedup(1)
 speedup2 = speedup(2)
 
 data_df = data_df[~yz2]
+data_df = data_df[~isnew]
 
 def __eval(filter_name):
     if filter_name[0] == "~":
