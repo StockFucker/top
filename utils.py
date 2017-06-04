@@ -1,11 +1,12 @@
 #  -*- coding: utf-8 -*-
 import pandas as pd
 
-data_df = pd.read_csv("top2.csv",index_col=0, parse_dates=True)
+data_df = pd.read_csv("top.csv",index_col=0, parse_dates=True)
 data_df = data_df[data_df["change"] < 1.22]
 data_df = data_df[~data_df["minute_low"].isnull()]
 data_df = data_df[~data_df.index.duplicated()] 
 data_df = data_df[data_df["st"] == False]
+data_df = data_df[data_df["date"] < "2015-06-01"]
 
 def low(day):
     return "minute_low" if day == 2 else "low" + str(day)
@@ -27,12 +28,19 @@ def speedup(day):
     return (data_df["high" + str(day)] - data_df[low(day)] < data_df["high" + str(day - 1)] - data_df[low(day - 1)])
 def recent(day,valid_data_df):
     return valid_data_df["recent"] == day
+def volumeup(degree = 1.0):
+    return data_df["volume0"] * degree < data_df["volume1"]
 
 isnew = data_df["isnew"] == 1
 small_capq = data_df["capq"] < 0.5
 small_cap = data_df["circap"] < 200
-minute = (data_df["minute"] < "11:00:00")
+minute = (data_df["minute"] < "10:30:00")
+minute2 = (data_df["minute"] > "09:35:00")
 small_volume = (data_df["minute_volume"] < data_df["volume1"] * 0.5)
+volumeup1 = volumeup()
+volumeup15 = volumeup(1.5)
+volumeup2 = volumeup(2)
+# break_top = data_df["top_count"] > 3
 
 #前天/昨天/今天开盘涨停
 opentop0 = opentop(0)
@@ -73,7 +81,11 @@ def combineFilters(filters):
     return reduce(lambda x, y: x & y, [__eval(filter_name) for filter_name in filters] + [~yz2])
 
 def getFilter(filter_key,with_recent = False):
-    filter_names = filter_key.split("-")[:-1]
+    filter_names = None
+    if with_recent:
+        filter_names = filter_key.split("-")[:-1]
+    else:
+        filter_names = filter_key.split("-")
     the_filter = combineFilters(filter_names)
     if with_recent:
         recent_filter = recent(int(filter_key[-1]),data_df)
@@ -85,7 +97,7 @@ def result(valid_data_df):
     result_df = pd.DataFrame()
     result_df["mean"] = valid_data_df.groupby(["recent"]).change.mean()
     result_df["count"] = valid_data_df.groupby(["recent"]).change.count()
-    result_df = result_df[result_df["count"] > 5]
+    result_df = result_df[result_df["count"] > 1]
     print result_df
     win_df = valid_data_df[valid_data_df["change"] > 1.0]
     win_ratio = float(len(win_df))/len(valid_data_df)

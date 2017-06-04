@@ -14,7 +14,7 @@ from utils import *
 
 filterTss = [["yz"],["~top"],["~yz","top","opentop"],["~opentop","top"]]
 
-filterOs = ["opentop2","speedup1","jump1","speedup2","jump2","foot0","foot1","foot2","isnew","small_capq","minute","small_volume"]
+filterOs = ["opentop2","speedup1","jump1","speedup2","jump2","foot0","foot1","foot2","isnew","small_volume"]
 
 
 # filterTss = [["yz"],["~top"]]
@@ -59,26 +59,27 @@ for i in range(3,len(all_filter_types)):
             valid_data_df = data_df[combined_filter]
             if len(valid_data_df) < 30:
                 continue
-            for j in range(1,8):
-                sub_valid_data_df = valid_data_df[recent(j,valid_data_df)]
-                sub_valid_data_df = sub_valid_data_df.sort_values("minute")
-                sub_valid_data_df = sub_valid_data_df.groupby("date").first()
-                count = len(sub_valid_data_df)
-                if count < 10:
-                    continue
-                change_se = mstats.winsorize(sub_valid_data_df.change,limits=[0.05, 0.05])
-                mean = change_se.mean()
-                if mean > 1.02:
-                    win_df = sub_valid_data_df[sub_valid_data_df["change"] > 1.0]
-                    win_ratio = float(len(win_df))/len(sub_valid_data_df)
-                    if win_ratio > 0.6:
-                        name = "-".join(each_filters) + "-" + str(j)
-                        win_ratio_se[name] = win_ratio
-                        mean_se[name] = mean
-                        count_se[name] = count
+            # for j in range(1,8):
+            # sub_valid_data_df = valid_data_df[recent(j,valid_data_df)]
+            sub_valid_data_df = valid_data_df
+            sub_valid_data_df = sub_valid_data_df.sort_values("minute")
+            sub_valid_data_df = sub_valid_data_df.groupby("date").first()
+            count = len(sub_valid_data_df)
+            if count < 30:
+                continue
+            change_se = mstats.winsorize(sub_valid_data_df.change,limits=[0.05, 0.05])
+            mean = change_se.mean()
+            if mean > 1.02:
+                win_df = sub_valid_data_df[sub_valid_data_df["change"] > 1.0]
+                win_ratio = float(len(win_df))/len(sub_valid_data_df)
+                if win_ratio > 0.6:
+                    name = "-".join(each_filters)
+                    win_ratio_se[name] = win_ratio
+                    mean_se[name] = mean
+                    count_se[name] = count
 
 df = pd.DataFrame()
 df["win_ratio"] = win_ratio_se
 df["mean"] = mean_se
 df["count"] = count_se
-df.to_csv("output3.csv")
+df.to_csv("output6.csv")
