@@ -6,7 +6,7 @@ data_df = data_df[data_df["change"] < 1.22]
 data_df = data_df[~data_df["minute_low"].isnull()]
 data_df = data_df[~data_df.index.duplicated()] 
 data_df = data_df[data_df["st"] == False]
-data_df = data_df[data_df["date"] < "2015-06-01"]
+# data_df = data_df[data_df["date"] < "2015-06-01"]
 
 def low(day):
     return "minute_low" if day == 2 else "low" + str(day)
@@ -40,7 +40,7 @@ small_volume = (data_df["minute_volume"] < data_df["volume1"] * 0.5)
 volumeup1 = volumeup()
 volumeup15 = volumeup(1.5)
 volumeup2 = volumeup(2)
-# break_top = data_df["top_count"] > 3
+break_top = data_df["top_count"] > 3
 
 #前天/昨天/今天开盘涨停
 opentop0 = opentop(0)
