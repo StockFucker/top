@@ -55,6 +55,7 @@ yz2 = yz(2)
 # 前天/昨天是/否涨停
 top0 = top(0)
 top1 = top(1)
+top2 = top(2)
 
 # 前天/昨天/今天 光脚
 foot0 = foot(0,0.995)
