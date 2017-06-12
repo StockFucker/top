@@ -1,7 +1,7 @@
 #  -*- coding: utf-8 -*-
 import pandas as pd
 
-data_df = pd.read_csv("top.csv",index_col=0, parse_dates=True)
+data_df = pd.read_csv("top99.csv",index_col=0, parse_dates=True)
 data_df = data_df[data_df["change"] < 1.22]
 data_df = data_df[~data_df["minute_low"].isnull()]
 data_df = data_df[~data_df.index.duplicated()] 
@@ -31,16 +31,16 @@ def recent(day,valid_data_df):
 def volumeup(degree = 1.0):
     return data_df["volume0"] * degree < data_df["volume1"]
 
-isnew = data_df["isnew"] == 1
-small_capq = data_df["capq"] < 0.5
-small_cap = data_df["circap"] < 200
+# isnew = data_df["isnew"] == 1
+# small_capq = data_df["capq"] < 0.5
+# small_cap = data_df["circap"] < 200
 minute = (data_df["minute"] < "10:30:00")
 minute2 = (data_df["minute"] > "09:35:00")
 small_volume = (data_df["minute_volume"] < data_df["volume1"] * 0.5)
 volumeup1 = volumeup()
 volumeup15 = volumeup(1.5)
 volumeup2 = volumeup(2)
-break_top = data_df["top_count"] > 3
+# break_top = data_df["top_count"] > 3
 
 #前天/昨天/今天开盘涨停
 opentop0 = opentop(0)
