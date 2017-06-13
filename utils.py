@@ -33,7 +33,7 @@ def volumeup(degree = 1.0):
 
 isnew = data_df["isnew"] == 1
 # small_capq = data_df["capq"] < 0.5
-small_cap = data_df["circap"] < 200
+# small_cap = data_df["circap"] < 200
 minute = (data_df["minute"] < "10:30:00")
 minute2 = (data_df["minute"] > "09:35:00")
 small_volume = (data_df["minute_volume"] < data_df["volume1"] * 0.5)
