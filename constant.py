@@ -22,9 +22,9 @@ filters3 = ["jump2-~foot1-small_volume-yz0-~opentop1-top1","foot2-small_volume-y
 filters4 = ["~foot1-speedup2-jump1-jump2-small_volume-yz0","~opentop2-jump1-jump2-small_volume-yz0"]
 filters5 = ["~isnew-jump2-small_volume-~yz0-top0-opentop0-~opentop1-top1"]
 filters6 = ["~speedup1-jump1-speedup2-small_volume-top1-opentop1","~opentop2-~speedup1-small_volume-top1-opentop1"]
-filters7 = ['~opentop2-jump1-~speedup2-foot0-foot2-small_volume','~speedup1-~jump2-foot0-foot2-small_volume']
-filters8 = ['~speedup1-~jump1-speedup2-~jump2-foot2-small_volume-top0','~speedup1-~jump1-jump2-~foot2-small_volume-top0']
-filters9 = ["~speedup1-~speedup2-jump2-~foot1-~isnew-small_volume-top0-~opentop1"]
+filters7 = ['~opentop2-jump1-~speedup2-foot0-foot2-small_volume-reachtop1','~speedup1-~jump2-foot0-foot2-small_volume-reachtop1']
+filters8 = ['~speedup1-~jump1-speedup2-~jump2-foot2-small_volume-top0','~speedup1-~jump1-jump2-~foot2-small_volume-top0-reachtop1']
+filters9 = ["~speedup1-~speedup2-jump2-~foot1-~isnew-small_volume-top0-~opentop1-reachtop1"]
 
 filterss = [filters2,filters3,filters4,filters5,filters6,filters7,filters8,filters9]
 

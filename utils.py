@@ -40,8 +40,8 @@ small_volume = (data_df["minute_volume"] < data_df["volume1"] * 0.5)
 volumeup1 = volumeup()
 volumeup15 = volumeup(1.5)
 volumeup2 = volumeup(2)
-break_top = data_df["top_count"] > 3
 
+reachtop1 = data_df["high1"] == data_df["high_limit1"]
 #前天/昨天/今天开盘涨停
 opentop0 = opentop(0)
 opentop1 = opentop(1)
