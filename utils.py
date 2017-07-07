@@ -37,6 +37,9 @@ isnew = data_df["isnew"] == 1
 minute = (data_df["minute"] < "10:30:00")
 minute2 = (data_df["minute"] > "09:35:00")
 small_volume = (data_df["minute_volume"] < data_df["volume1"] * 0.5)
+small_volume2 = (data_df["minute_volume"] < data_df["volume1"] * 0.6)
+small_volume3 = (data_df["minute_volume"] < data_df["volume1"] * 0.7)
+
 volumeup1 = volumeup()
 volumeup15 = volumeup(1.5)
 volumeup2 = volumeup(2)
