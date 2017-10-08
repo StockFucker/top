@@ -102,10 +102,10 @@ def result(valid_data_df):
     result_df["mean"] = valid_data_df.groupby(["recent"]).change.mean()
     result_df["count"] = valid_data_df.groupby(["recent"]).change.count()
     result_df = result_df[result_df["count"] > 1]
-    print result_df
+    # print result_df
     win_df = valid_data_df[valid_data_df["change"] > 1.0]
     win_ratio = float(len(win_df))/len(valid_data_df)
-    print win_ratio,len(valid_data_df),valid_data_df.change.mean()
+    return win_ratio,len(valid_data_df),valid_data_df.change.mean()
 #     valid_data_df = valid_data_df.sort_index()
 #     value_se = valid_data_df.change.cumprod()
 #     print value_se.plot(figsize=(7,4))
